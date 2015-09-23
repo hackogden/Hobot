@@ -11,8 +11,8 @@
 module.exports = (robot) ->
   getListOfLunchSpots = () ->
     lunchString = ""
-      for spot in robot.brain.data.lunchSpots
-        lunchString += " #{spot},"
+    for spot in robot.brain.data.lunchSpots
+      lunchString += " #{spot},"
     return lunchString
 
   robot.brain.data.lunchSpots ||= []
