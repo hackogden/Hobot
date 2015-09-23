@@ -9,18 +9,23 @@
 #   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
 
 module.exports = (robot) ->
+  getListOfLunchSpots = () ->
+    lunchString = ""
+      for spot in robot.brain.data.lunchSpots
+        lunchString += " #{spot},"
+    return lunchString
 
   robot.brain.data.lunchSpots ||= []
+  console.log(robot.brain.data.testObj)
 
   robot.respond /lunch me/i, (res) ->
-    res.reply "how about zupas????"
+    res.reply "Which one of these would you like: #{getListOfLunchSpots()}"
+    robot.brain.data.testObj = {awesome: Date.now()}
 
   robot.respond /add lunch place (.*)/i, (res) ->
     robot.brain.data.lunchSpots.push res.match[1]
-    lunchString = ""
-    for spot in robot.brain.data.lunchSpots
-      lunchString += " #{spot},"
-    res.send "OK. I now have a sweet list of places: #{lunchString}"
+    res.send "OK. I now have a sweet list of places: #{getListOfLunchSpots()}"
+
 
 
 
