@@ -13,14 +13,12 @@ module.exports = (robot) ->
   robot.respond /lunch me/i, (res) ->
     res.reply "how about zupas????"
 
-  robot.respond /add lunch place/i, (res) ->
-    res.send "What's the name?"
-    robot.respond /(.*)/, (res) ->
-      lunchSpots.push res.match[1]
-      lunchString = ""
-      for spot in lunchSpots
-        lunchString += " #{spot},"
-      res.send "OK. I now have a sweet list of places: #{lunchString}"
+  robot.respond /add lunch place (.*)/i, (res) ->
+    lunchSpots.push res.match[1]
+    lunchString = ""
+    for spot in lunchSpots
+      lunchString += " #{spot},"
+    res.send "OK. I now have a sweet list of places: #{lunchString}"
 
 
 
