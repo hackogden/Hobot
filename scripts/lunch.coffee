@@ -7,16 +7,18 @@
 #   Uncomment the ones you want to try and experiment with.
 #
 #   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
-lunchSpots = []
+
 module.exports = (robot) ->
+
+  robot.brain.data.lunchSpots ||= []
 
   robot.respond /lunch me/i, (res) ->
     res.reply "how about zupas????"
 
   robot.respond /add lunch place (.*)/i, (res) ->
-    lunchSpots.push res.match[1]
+    robot.brain.data.lunchSpots.push res.match[1]
     lunchString = ""
-    for spot in lunchSpots
+    for spot in robot.brain.data.lunchSpots
       lunchString += " #{spot},"
     res.send "OK. I now have a sweet list of places: #{lunchString}"
 
