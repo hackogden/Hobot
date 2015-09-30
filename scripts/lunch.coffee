@@ -8,12 +8,13 @@
 #
 #   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
 
-questions = ["name","phone","specialty","notes"]
+questions = ["name?","phone?","specialty?","notes"]
 inTree = false
 i = 0
 module.exports = (robot) ->
   robot.listen(
     (message) ->
+      console.log message.user
       inTree
 
     , (response) ->
@@ -43,11 +44,8 @@ module.exports = (robot) ->
   robot.respond /start lunching/i, (res) ->
     inTree = true
     i = 0
+    res.send "OK I'm going to ask you a bunch of questions about your new place."
     res.send questions[i]
-
-  robot.respond /stop lunching/i, (res) ->
-    inTree = false
-    res.send "OK all done."
 
 
 
