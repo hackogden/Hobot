@@ -8,22 +8,46 @@
 #
 #   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
 
-questions = ["name?","phone?","specialty?","notes"]
+questions = [
+  {text: "What's the name of the place?", value: "name"}
+  {text: "What's the phone number?", value: "phone"}
+  {text: "What kind of food is it?", value: "kind"}
+  {text: "Do you have a link to their menu?", value: "menuUrl"}
+  {text: "Anything else we should know?", value: "text"}
+]
+
 inTree = false
 i = 0
+currentUser = undefined
+currentRoom = undefined
+editingLunchPlace = undefined
 module.exports = (robot) ->
   robot.listen(
     (message) ->
-      console.log message.user
+      if inTree
+
+        editingLunchPlace[questions[i - 1].value] = message.text if message.text
+      else
+        console.log message
+        match = message.text?.match /lunch me/
+        if match
+          inTree = true
+          currentUser = message.user
+          currentRoom = message.user.room
+          editingLunchPlace = {}
+        console.log "DONE!!"
       inTree
 
     , (response) ->
       if i == questions.length
-        response.send "does this look good?"
-        response.send JSON.stringify {fake: "object"}
+        response.send "does this look good? It doesn't matter because we're saving it anyway."
+        response.send JSON.stringify editingLunchPlace
+        robot.brain.data.places ||= []
+        robot.brain.data.places.push editingLunchPlace
+        response.send "We now have #{robot.brain.data.places.length} places in the system. Woot!"
         inTree = false
       else
-        response.send questions[i]
+        response.send questions[i].text
         i++
     )
   getListOfLunchSpots = () ->
@@ -43,12 +67,6 @@ module.exports = (robot) ->
     robot.brain.data.lunchSpots.push res.match[1]
     res.send "OK. I now have a sweet list of places: #{getListOfLunchSpots()}"
 
-  robot.respond /start lunching/i, (res) ->
-    inTree = true
-    i = 0
-    res.send "OK I'm going to ask you a bunch of questions about your new place."
-    res.send questions[i]
-    i++
 
 
 
