@@ -8,7 +8,14 @@
 #
 #   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
 
+questions = ["name","phone","specialty","notes"]
+inTree = false
+i = 0
 module.exports = (robot) ->
+  robot.listen (message) ->
+    (response) ->
+      response.send questions[i] if inTree
+      i++
   getListOfLunchSpots = () ->
     lunchString = ""
     for spot in robot.brain.data.lunchSpots
@@ -25,6 +32,15 @@ module.exports = (robot) ->
   robot.respond /add lunch place (.*)/i, (res) ->
     robot.brain.data.lunchSpots.push res.match[1]
     res.send "OK. I now have a sweet list of places: #{getListOfLunchSpots()}"
+
+  robot.respond /start lunching/i, (res) ->
+    inTree = true
+    i = 0
+    res.send questions[i]
+
+  robot.respond /stop lunching/i, (res) ->
+    inTree = false
+    res.send "OK all done."
 
 
 
