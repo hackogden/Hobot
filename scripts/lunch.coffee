@@ -17,7 +17,7 @@ module.exports = (robot) ->
       inTree
 
     , (response) ->
-      if i > questions.length
+      if i == questions.length
         inTree = false
       else
         response.send questions[i]
