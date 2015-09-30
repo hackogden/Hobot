@@ -46,6 +46,7 @@ module.exports = (robot) ->
     i = 0
     res.send "OK I'm going to ask you a bunch of questions about your new place."
     res.send questions[i]
+    i++
 
 
 
