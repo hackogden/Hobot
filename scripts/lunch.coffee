@@ -14,8 +14,11 @@ i = 0
 module.exports = (robot) ->
   robot.listen (message) ->
     (response) ->
-      response.send questions[i] if inTree
-      i++
+      if i > questions.length
+        inTree = false
+      else
+        response.send questions[i] if inTree
+        i++
   getListOfLunchSpots = () ->
     lunchString = ""
     for spot in robot.brain.data.lunchSpots
