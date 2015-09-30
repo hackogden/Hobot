@@ -19,6 +19,8 @@ module.exports = (robot) ->
 
     , (response) ->
       if i == questions.length
+        response.send "does this look good?"
+        response.send JSON.stringify message.user
         inTree = false
       else
         response.send questions[i]
