@@ -29,7 +29,7 @@ module.exports = (robot) ->
         editingLunchPlace[questions[i - 1].value] = message.text if message.text
       else
         console.log message
-        match = message.text?.match /lunch me/
+        match = message.text?.match /add lunch me/
         if match
           inTree = true
           currentUser = message.user
@@ -58,15 +58,6 @@ module.exports = (robot) ->
 
   robot.brain.data.lunchSpots ||= []
   console.log(robot.brain.data.testObj)
-
-  robot.respond /lunch me/i, (res) ->
-    res.reply "Which one of these would you like: #{getListOfLunchSpots()}"
-    robot.brain.data.testObj = {awesome: Date.now()}
-
-  robot.respond /add lunch place (.*)/i, (res) ->
-    robot.brain.data.lunchSpots.push res.match[1]
-    res.send "OK. I now have a sweet list of places: #{getListOfLunchSpots()}"
-
 
 
 
