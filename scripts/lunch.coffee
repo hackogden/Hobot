@@ -22,20 +22,20 @@ currentUser = undefined
 currentRoom = undefined
 editingLunchPlace = undefined
 module.exports = (robot) ->
+  console.log robot.brain.places
+  console.log robot.brain.lunchSpots
   robot.listen(
     (message) ->
       if inTree
 
         editingLunchPlace[questions[i - 1].value] = message.text if message.text
       else
-        console.log message
         match = message.text?.match /add lunch me/
         if match
           inTree = true
           currentUser = message.user
           currentRoom = message.user.room
           editingLunchPlace = {}
-        console.log "DONE!!"
       inTree
 
     , (response) ->
@@ -50,14 +50,16 @@ module.exports = (robot) ->
         response.send questions[i].text
         i++
     )
-  getListOfLunchSpots = () ->
-    lunchString = ""
-    for spot in robot.brain.data.lunchSpots
-      lunchString += " #{spot},"
-    return lunchString
 
   robot.brain.data.lunchSpots ||= []
-  console.log(robot.brain.data.testObj)
+
+
+  robot.respond /get me lunch(.*)/i, (res) ->
+    total = robot.brain.data.places.length
+    randomishNumber = Math.floor(Math.random() * total) + 1
+    ourLunchSpot = robot.brain.data.places[randomishNumber]
+    res.send "Our lunch spot: #{JSON.stringify ourLunchSpot}"
+
 
 
 
