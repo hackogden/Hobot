@@ -45,6 +45,7 @@ module.exports = (robot) ->
         robot.brain.data.places ||= []
         robot.brain.data.places.push editingLunchPlace
         response.send "We now have #{robot.brain.data.places.length} places in the system. Woot!"
+        console.log robot.data.places
         inTree = false
       else
         response.send questions[i].text
